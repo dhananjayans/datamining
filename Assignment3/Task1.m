@@ -1,13 +1,13 @@
 
-Path = 'C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Vamsi2\spoon';
+Path = 'C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Project\Assignment3\Content\spoon';
 Filename = '1503699291032.mp4';
 
 Video = VideoReader(fullfile(Path,Filename));
 
-EMG_file = csvread('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Vamsi2\spoon\1503699291032_EMG.txt');
-IMU_file = csvread('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Vamsi2\spoon\1503699291032_IMU.txt');
+EMG_file = csvread('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Project\Assignment3\Content\spoon\1503699291032_EMG.txt');
+IMU_file = csvread('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Project\Assignment3\Content\spoon\1503699291032_IMU.txt');
 
-SpoonDataPath = 'C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM';
+SpoonDataPath = 'C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Project\Assignment3';
 SpoonDataFile = '1503699291032.txt';
 
 EatingActionFrameRange = csvread(fullfile(SpoonDataPath,SpoonDataFile));
@@ -208,12 +208,21 @@ for iter = 1:actionCounter
 end
 
 OutputFile = 'EatingCSV.csv';                                           
-OutputPath = fullfile('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\EatingCSV.csv',OutputFile);                                 
+OutputPath = fullfile('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Project\Assignment3\EatingCSV.csv',OutputFile);                                 
 Output = fopen(OutputPath,'w');
 
+save('EatingActionCSV.mat','EatingActionCSV');
+save('NoneatingActionCSV.mat','NoneatingActionCSV');
+
 for iteri = 1:EMGsize_row + IMUsize_row
-    for iterj = 1:1000
-        
+    line = int2str(EatingActionCSV(iteri,1));
+    for iterj = 2:1000
+        if ~isnan(EatingActionCSV(iteri,iterj))
+            line = strcat(line,',',int2str(EatingActionCSV(iteri,iterj)));
+        end
     end
+    fprintf(Output,'%s',line);
+    fprintf(Output,'\n');
 end
 
+fclose(Output);
