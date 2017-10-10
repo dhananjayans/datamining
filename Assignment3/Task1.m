@@ -1,4 +1,7 @@
 
+
+%[EatingActionCSV,NoneatingActionCSV] = ParseInput(VideoPath,Assignment2Path,); 
+
 Path = 'C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Project\Assignment3\Content\spoon';
 Filename = '1503699291032.mp4';
 
@@ -157,8 +160,8 @@ end
 
 ActionNo = 1;
 for iter = 1:row
-    ApproxStartTimestampIMU = LastTimestampIMU - ((numFrames - EatingActionFrameRange(iter,1))/Video.FrameRate)*1000;
-    ApproxEndTimestampIMU = LastTimestampIMU - ((numFrames - EatingActionFrameRange(iter,2))/Video.FrameRate)*1000;
+    ApproxStartTimestampIMU = LastTimestampIMU - ((numFrames - NoneatingActionFrameRange(iter,1))/Video.FrameRate)*1000;
+    ApproxEndTimestampIMU = LastTimestampIMU - ((numFrames - NoneatingActionFrameRange(iter,2))/Video.FrameRate)*1000;
     for start = 1:IMU_row
        if IMU_file(start,1) > ApproxStartTimestampIMU
            break;
@@ -180,7 +183,7 @@ EatingActionIMU = EatingActionIMU';
 NoneatingActionEMG = NoneatingActionEMG';
 NoneatingActionIMU = NoneatingActionIMU';
 
-[EMGsize_row,EMGsize_col] = size(EatingActionEMG);
+[EMGsize_row,EMGsize_col] = size(   EatingActionEMG);
 [IMUsize_row,IMUsize_col] = size(EatingActionIMU);
 EatingActionCSV = nan(EMGsize_row +IMUsize_row,1000);
 NoneatingActionCSV = nan(EMGsize_row +IMUsize_row,1000);
@@ -208,7 +211,7 @@ for iter = 1:actionCounter
 end
 
 OutputFile = 'EatingCSV.csv';                                           
-OutputPath = fullfile('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Project\Assignment3\EatingCSV.csv',OutputFile);                                 
+OutputPath = fullfile('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Project\Assignment3\',OutputFile);                                 
 Output = fopen(OutputPath,'w');
 
 save('EatingActionCSV.mat','EatingActionCSV');
@@ -218,7 +221,7 @@ for iteri = 1:EMGsize_row + IMUsize_row
     line = int2str(EatingActionCSV(iteri,1));
     for iterj = 2:1000
         if ~isnan(EatingActionCSV(iteri,iterj))
-            line = strcat(line,',',int2str(EatingActionCSV(iteri,iterj)));
+            line = strcat(line,',',num2str(EatingActionCSV(iteri,iterj)));
         end
     end
     fprintf(Output,'%s',line);
