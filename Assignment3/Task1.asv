@@ -1,0 +1,140 @@
+
+Path = 'C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Vamsi2\spoon';
+Filename = '1503699291032.mp4';
+
+Video = VideoReader(fullfile(Path,Filename));
+
+EMG_file = csvread('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Vamsi2\spoon\1503699291032_EMG.txt');
+IMU_file = csvread('C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM\Vamsi2\spoon\1503699291032_IMU.txt');
+
+SpoonDataPath = 'C:\Users\Joel\Desktop\ASU_Stuff\Sem3\DM';
+SpoonDataFile = '1503699291032.txt';
+
+EatingActionFrameRange = csvread(fullfile(SpoonDataPath,SpoonDataFile));
+numFrames = ceil(Video.FrameRate*Video.Duration);
+
+[row,col] = size(EatingActionFrameRange);
+NoneatingActionFrameRange = zeros(row,2);
+
+for iter = 1:row
+    NoneatingActionFrameRange(iter,1) = EatingActionFrameRange(iter,2) + 1;
+    if iter ~= row
+        NoneatingActionFrameRange(iter,2) = EatingActionFrameRange(iter+1,1) - 1;
+    else
+        NoneatingActionFrameRange(iter,2) = numFrames;
+    end
+end
+
+[EMG_row,EMG_col] = size(EMG_file);
+[IMU_row,IMU_col] = size(IMU_file);
+
+LastTimestampEMG = EMG_file(EMG_row,1);
+LastTimestampIMU = IMU_file(IMU_row,1);
+
+ApproxStartTimestampEMG = LastTimestampEMG - ((numFrames - EatingActionFrameRange(1,1))/Video.FrameRate)*1000;
+ApproxStartTimestampIMU = LastTimestampIMU - ((numFrames - EatingActionFrameRange(1,1))/Video.FrameRate)*1000;
+
+EatingActionEMG = zeros(1000,(row * (EMG_col - 1)));
+NoneatingActionEMG = zeros(1000,(row * (EMG_col - 1)));
+
+%Eating Action EMG
+sensorDesc = 1;
+actionCounter = 1;
+for iter = 1:(row * (EMG_col - 1))
+    if sensorDesc == 9
+        sensorDesc = 1;
+        actionCounter = actionCounter + 1;
+    end
+    EatingActionEMG(1,iter) = actionCounter;
+    EatingActionEMG(2,iter) = sensorDesc;
+    sensorDesc = sensorDesc + 1;
+end
+
+
+ActionNo = 1;
+for iter = 1:row
+    ApproxStartTimestampEMG = LastTimestampEMG - ((numFrames - EatingActionFrameRange(iter,1))/Video.FrameRate)*1000;
+    ApproxEndTimestampEMG = LastTimestampEMG - ((numFrames - EatingActionFrameRange(iter,2))/Video.FrameRate)*1000;
+    for start = 1:EMG_row
+       if EMG_file(start,1) > ApproxStartTimestampEMG
+           break;
+       end
+    end
+    startpos = start - 1;
+    for start = startpos:EMG_row
+       if EMG_file(start,1) > ApproxEndTimestampEMG
+           break;
+       end
+    end
+    endpos = start - 1;
+    EatingActionEMG(3:3 + (endpos - startpos),ActionNo:ActionNo+7) = EMG_file(startpos:endpos,2:9);
+    ActionNo = ActionNo + 8;
+end
+
+%Noneating Action EMG
+sensorDesc = 1;
+actionCounter = 1;
+for iter = 1:(row * (EMG_col - 1))
+    if sensorDesc == 9
+        sensorDesc = 1;
+        actionCounter = actionCounter + 1;
+    end
+    NoneatingActionEMG(1,iter) = actionCounter;
+    NoneatingActionEMG(2,iter) = sensorDesc;
+    sensorDesc = sensorDesc + 1;
+end
+
+ActionNo = 1;
+for iter = 1:row
+    ApproxStartTimestampEMG = LastTimestampEMG - ((numFrames - NoneatingActionFrameRange(iter,1))/Video.FrameRate)*1000;
+    ApproxEndTimestampEMG = LastTimestampEMG - ((numFrames - NoneatingActionFrameRange(iter,2))/Video.FrameRate)*1000;
+    for start = 1:EMG_row
+       if EMG_file(start,1) > ApproxStartTimestampEMG
+           break;
+       end
+    end
+    startpos = start - 1;
+    for start = startpos:EMG_row
+       if EMG_file(start,1) > ApproxEndTimestampEMG
+           break;
+       end
+    end
+    endpos = start - 1;
+    NoneatingActionEMG(3:3 + (endpos - startpos),ActionNo:ActionNo+7) = EMG_file(startpos:endpos,2:9);
+    ActionNo = ActionNo + 8;
+end
+
+
+%Eating Action IMU
+sensorDesc = 1;
+actionCounter = 1;
+for iter = 1:(row * (IMU_col - 1))
+    if sensorDesc == 9
+        sensorDesc = 1;
+        actionCounter = actionCounter + 1;
+    end
+    EatingActionEMG(1,iter) = actionCounter;
+    EatingActionEMG(2,iter) = sensorDesc;
+    sensorDesc = sensorDesc + 1;
+end
+
+
+ActionNo = 1;
+for iter = 1:row
+    ApproxStartTimestampEMG = LastTimestampEMG - ((numFrames - EatingActionFrameRange(iter,1))/Video.FrameRate)*1000;
+    ApproxEndTimestampEMG = LastTimestampEMG - ((numFrames - EatingActionFrameRange(iter,2))/Video.FrameRate)*1000;
+    for start = 1:EMG_row
+       if EMG_file(start,1) > ApproxStartTimestampEMG
+           break;
+       end
+    end
+    startpos = start - 1;
+    for start = startpos:EMG_row
+       if EMG_file(start,1) > ApproxEndTimestampEMG
+           break;
+       end
+    end
+    endpos = start - 1;
+    EatingActionEMG(3:3 + (endpos - startpos),ActionNo:ActionNo+7) = EMG_file(startpos:endpos,2:9);
+    ActionNo = ActionNo + 8;
+end
