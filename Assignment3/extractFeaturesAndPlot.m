@@ -1,4 +1,6 @@
 function[] = extractFeaturesAndPlot(eatingMatrix, nonEatingMatrix)
+    eatingMatrix = eatingMatrix(:,3:end);
+    nonEatingMatrix = nonEatingMatrix(:,3:end);
     noOfFeatures = 18;
     [meanEatingMat, varianceEatingMat, rmsEatingMat, entropyEatingMat] = getFeatureValues(eatingMatrix);
     [meanNonEatingMat, varianceNonEatingMat, rmsNonEatingMat, entropyNonEatingMat] = getFeatureValues(nonEatingMatrix);
