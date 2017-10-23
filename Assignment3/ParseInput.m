@@ -1,11 +1,13 @@
 function [EatingActionCSV,NoneatingActionCSV] = ParseInput(VideoPath,Assignment2Path,EMG_filePath,IMU_filePath)
 
 Video = VideoReader(VideoPath);
+disp(EMG_filePath);
+disp(IMU_filePath);
 EMG_file = csvread(EMG_filePath);
 IMU_file = csvread(IMU_filePath);
     
 EatingActionFrameRange = csvread(Assignment2Path);
-numFrames = ceil(Video.FrameRate*Video.Duration);
+numFrames = ceil(30*Video.Duration);
 
 [row,col] = size(EatingActionFrameRange);
 NoneatingActionFrameRange = nan(row,2);
