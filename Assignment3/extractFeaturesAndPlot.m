@@ -2,21 +2,24 @@ function[] = extractFeaturesAndPlot(eatingMatrix, nonEatingMatrix)
     eatingMatrix = eatingMatrix(:,3:end);
     nonEatingMatrix = nonEatingMatrix(:,3:end);
     noOfFeatures = 18;
-    [meanEatingMat, varianceEatingMat, rmsEatingMat, entropyEatingMat] = getFeatureValues(eatingMatrix);
-    [meanNonEatingMat, varianceNonEatingMat, rmsNonEatingMat, entropyNonEatingMat] = getFeatureValues(nonEatingMatrix);
+    [meanEatingMat, varianceEatingMat, rmsEatingMat, entropyEatingMat, wilsonEatingMat] = getFeatureValues(eatingMatrix);
+    [meanNonEatingMat, varianceNonEatingMat, rmsNonEatingMat, entropyNonEatingMat, wilsonNonEatingMat] = getFeatureValues(nonEatingMatrix);
     for i=1:noOfFeatures
         displayBoxPlot(meanEatingMat(i,:), meanNonEatingMat(i,:), i, 'Mean');
         displayBoxPlot(varianceEatingMat(i,:), varianceNonEatingMat(i,:), i, 'Variance');
         displayBoxPlot(rmsEatingMat(i,:), rmsNonEatingMat(i,:), i, 'RMS');
         displayBoxPlot(entropyEatingMat(i,:), entropyNonEatingMat(i,:), i, 'Entropy');
+        displayBoxPlot(wilsonEatingMat(i,:), wilsonNonEatingMat(i,:), i, 'Wilson');
     end
 end
 
 function[] = displayBoxPlot(eatingRow, nonEatingRow, featureIndex, metricType)
     featureName = getFeatureName(featureIndex);
-    boxplot(eatingRow', nonEatingRow', {'Eating','Non-Eating'});
+    boxplot([eatingRow', nonEatingRow'], {'Eating','Non-Eating'});
+    title(metricType);
     title(featureName);
-    imageName = strcat('BoxPlotImages/',featureName,'_',metricType,'.png');
+    
+    imageName = strcat('BoxPlotImages/',featureName{1},'_',metricType,'.png');
     saveas(gcf, imageName);
 end
 
