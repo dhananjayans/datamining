@@ -1,6 +1,6 @@
 function[] = prepareTrainingData(eatingMatrix, nonEatingMatrix)
-    eatingMatrix = eatingMatrix(:,3:end);
-    nonEatingMatrix = nonEatingMatrix(:,3:end);
+    eatingMatrix = eatingMatrix(1:27000,3:end);
+    nonEatingMatrix = nonEatingMatrix(1:27000,3:end);
     noOfSensors = 18;
     [meanEatingMat, varianceEatingMat, rmsEatingMat, entropyEatingMat, wilsonEatingMat, vCrossEatingMat] = getFeatureValues(eatingMatrix);
     [meanNonEatingMat, varianceNonEatingMat, rmsNonEatingMat, entropyNonEatingMat, wilsonNonEatingMat, vCrossNonEatingMat] = getFeatureValues(nonEatingMatrix);
@@ -57,8 +57,9 @@ end
 function[] = displayBoxPlot(eatingRow, nonEatingRow, graphLabel)
     boxplot([eatingRow', nonEatingRow'], {'Eating','Non-Eating'});
     title(graphLabel);
-%     saveas(gcf, imageName);
-    pause(1.5);
+    imageName = strcat('Task2PlotImages/',graphLabel,'.png');
+    saveas(gcf, imageName);
+    pause(3.5);
 end
 
 function[mapping] = getFeatureNameMappings()
