@@ -12,7 +12,7 @@ function[meanMat, varianceMat, rmsMat, entropyMat, wilsonMat] = getFeatureValues
     for i=1:noOfRowsAndColumns(1)
         featureIndex = mod(i, noOfFeatures);
         if featureIndex == 0
-            featureIndex = i*noOfFeatures;
+            featureIndex = noOfFeatures; 
         end
         sampleIndex  = ceil(i/noOfFeatures);
         

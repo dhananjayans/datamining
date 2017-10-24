@@ -1,9 +1,19 @@
 function[average, variance, rmsValue, entropyVal, wilsonAmp] = getStatistics(row)
-    average = calculateMean(row);
-    variance = calculateVariance(row);
-    rmsValue = calculateRMS(row);
-    entropyVal = calculateEntropy(row);
-    wilsonAmp = calculateWilsonAmp(row);
+    row(isnan(row)) = [];
+    rowSize = size(row);
+    if rowSize(2) >= 1
+        average     = calculateMean(row);
+        variance    = calculateVariance(row);
+        rmsValue    = calculateRMS(row);
+        entropyVal  = calculateEntropy(row);
+        wilsonAmp   = calculateWilsonAmp(row);
+    else
+        average     = NaN;
+        variance    = NaN;
+        rmsValue    = NaN;
+        entropyVal  = NaN;
+        wilsonAmp   = NaN;
+    end
 end
 
 function [average] = calculateMean(row)
@@ -24,7 +34,7 @@ end
 
 function [wilsonAmp] = calculateWilsonAmp(row)
     wilsonAmp = 0;
-    row(isnan(row)) = [];
+    % row(isnan(row)) = [];
     rmsMean = rms(row);
     threshold = 0.35 * rmsMean;
     for k = 2:length(row)

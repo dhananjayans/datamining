@@ -17,10 +17,11 @@ function[] = displayBoxPlot(eatingRow, nonEatingRow, featureIndex, metricType)
     featureName = getFeatureName(featureIndex);
     boxplot([eatingRow', nonEatingRow'], {'Eating','Non-Eating'});
     title(metricType);
-    title(featureName);
+    %title(featureName);
     
     imageName = strcat('BoxPlotImages/',featureName{1},'_',metricType,'.png');
     saveas(gcf, imageName);
+    %pause(1);
 end
 
 function[featureName] = getFeatureName(index)
