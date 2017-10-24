@@ -12,7 +12,14 @@ function[] = performPCAandPlot(trainingData)
     disp(eigenVectors);
     
 %     Plot
-
+    labels = {'Gyro-X NWAMP', 'Gyro-Y NWAMP', 'Gyro-Z NWAMP', 'Orientation-X Variance', 'Orientation-Y Variance', 'Orientation-Z Variance', 'Orientation-w Variance'};
+    sizeEig =size(eigenVectors);
+    for i=1:sizeEig(2)
+        bar(eigenVectors(:,i)');
+        set(gca,'xticklabel',labels);
+        imageName = strcat('Task3PlotImages/','EigenVect',num2str(i),'.png');
+        saveas(gcf, imageName);
+    end
 %     Select 3 Vectors
     noOfDims = 3;
     reducedEigenVectors = eigenVectors(:,1:noOfDims);
