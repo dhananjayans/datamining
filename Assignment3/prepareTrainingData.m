@@ -1,4 +1,4 @@
-function[] = prepareTrainingData(eatingMatrix, nonEatingMatrix)
+function[trainingTable] = prepareTrainingData(eatingMatrix, nonEatingMatrix)
     eatingMatrix = eatingMatrix(1:27000,3:end);
     nonEatingMatrix = nonEatingMatrix(1:27000,3:end);
     noOfSensors = 18;
@@ -43,7 +43,7 @@ function[] = prepareTrainingData(eatingMatrix, nonEatingMatrix)
 %     Variance, Orientation-Y Variance, Orientation-Z Variance,
 %     Orientation-w Variance, Class labels (1 eating, 0 non eating)
     trainingTable = [sampleIDArr', [gyroXVals_Eating,gyroXVals_NonEating]', [gyroYVals_Eating,gyroYVals_NonEating]', [gyroZVals_Eating, gyroZVals_NonEating]', [orientationX_Eating, orientationX_NonEating]', [orientationY_Eating, orientationY_NonEating]', [orientationZ_Eating, orientationZ_NonEating]', [orientationW_Eating, orientationW_NonEating]', classLabels']; 
-    save('trainingTable', 'trainingTable');
+    save('trainingTable.mat', 'trainingTable');
     
 %   Box plots for Gyro X,Z and Orientation X,Y,Z
     displayBoxPlot(gyroXVals_Eating, gyroXVals_NonEating, 'Gyroscope X using Normalized WAMP');
