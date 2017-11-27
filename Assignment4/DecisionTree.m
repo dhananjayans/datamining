@@ -1,4 +1,4 @@
-function [precision,recall,f1] = DecisionTree(train,test)
+function [predictedlabel,scores,nodes,cnum,actuallabel] = DecisionTree(train,test)
 
 traindata = train(:,1:end-1);
 trainlabel = train(:,end);
@@ -11,6 +11,5 @@ disp("Being test");
 testdata = test(:,1:end-1);
 actuallabel = test(:,end);
 [predictedlabel,scores,nodes,cnum] = predict(tree,testdata);
-
 disp("End test");
 end

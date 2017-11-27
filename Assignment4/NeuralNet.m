@@ -1,4 +1,4 @@
-function [precision,recall,f1] = NeuralNet(train,test)
+function [predictedlabel,scores,actuallabel] = NeuralNet(train,test)
 
 traindata = train(:,1:end-1);
 trainlabel = train(:,end);
