@@ -1,4 +1,4 @@
-function [precision,recall,f1] = SVM(train,test)
+function [predictedlabel,scores,actuallabel] = SVM(train,test)
 
 traindata = train(:,1:end-1);
 trainlabel = train(:,end);
