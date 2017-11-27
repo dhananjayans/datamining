@@ -2,7 +2,6 @@ function[meanMat, varianceMat, rmsMat, entropyMat, wilsonMat, VCMat] = getFeatur
     noOfRowsAndColumns = size(actionMatrix);
     noOfFeatures = 18;
     noOfSamples  = noOfRowsAndColumns(1)/noOfFeatures;
-    
     meanMat     = NaN(noOfFeatures, noOfSamples);
     varianceMat = NaN(noOfFeatures, noOfSamples);
     rmsMat      = NaN(noOfFeatures, noOfSamples);

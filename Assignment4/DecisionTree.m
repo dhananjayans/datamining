@@ -1,15 +1,16 @@
-function [predictedlabel,scores,nodes,cnum,actuallabel] = DecisionTree(train,test)
+function [precision,recall,f1,auc] = DecisionTree(train,test)
 
 traindata = train(:,1:end-1);
 trainlabel = train(:,end);
 
-disp("Begin training");
+disp("DT Begin training");
 tree = fitctree(traindata,trainlabel);
-disp("Training done");
+disp("DT Training done");
 
 disp("Being test");
 testdata = test(:,1:end-1);
 actuallabel = test(:,end);
 [predictedlabel,scores,nodes,cnum] = predict(tree,testdata);
-disp("End test");
+[precision,recall,f1,auc] = calculateAccuracy(actuallabel,predictedlabel,scores);
+disp("DT End test");
 end

@@ -1,4 +1,4 @@
-function [predictedlabel,scores,actuallabel] = NeuralNet(train,test)
+function [precision,recall,f1,auc] = NeuralNet(train,test)
 
 traindata = train(:,1:end-1);
 trainlabel = train(:,end);
@@ -14,6 +14,6 @@ disp("Being test");
 testdata = test(:,1:end-1);
 actuallabel = test(:,end);
 [predictedlabel,scores] = predict(model,testdata);
-
+[precision,recall,f1,auc] = calculateAccuracy(actuallabel,predictedlabel,scores);
 disp("End test");
 end
