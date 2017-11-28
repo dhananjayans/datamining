@@ -1,8 +1,8 @@
 function [] = Assign4
-baseName = "DataMats/GroupWise/Group_";
+baseName = 'DataMats/GroupWise/Group_'
 valMatrix = zeros(34,12);
-load("EatingActionCSV.mat");
-load("NoneatingActionCSV.mat");
+load('EatingActionCSV.mat');
+load('NoneatingActionCSV.mat');
 trainMat = [];
 testMat = [];
 interMat = [];
@@ -26,12 +26,12 @@ for i = 1:33
     end
     
     if(i<10)
-        eatingName = strcat(baseName,"0",num2str(i),"/Eating/Eating.mat");
-        nonEatingName = strcat(baseName,"0",num2str(i),"/NonEating/NonEating.mat");
+        eatingName = strcat(baseName,'0',num2str(i),'/Eating/Eating.mat');
+        nonEatingName = strcat(baseName,'0',num2str(i),'/NonEating/NonEating.mat');
         
     else
-        eatingName = strcat(baseName,num2str(i),"/Eating/Eating.mat");
-        nonEatingName = strcat(baseName,num2str(i),"/NonEating/NonEating.mat");
+        eatingName = strcat(baseName,num2str(i),'/Eating/Eating.mat');
+        nonEatingName = strcat(baseName,num2str(i),'/NonEating/NonEating.mat');
     end
     eatingMat = load(eatingName);
     nonEatingMat = load(nonEatingName);
