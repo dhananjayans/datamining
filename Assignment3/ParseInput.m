@@ -1,13 +1,10 @@
-function [EatingActionCSV,NoneatingActionCSV] = ParseInput(VideoPath,Assignment2Path,EMG_filePath,IMU_filePath)
-
-Video = VideoReader(VideoPath);
+function [EatingActionCSV,NoneatingActionCSV] = ParseInput(numFrames,frameRate,Assignment2Path,EMG_filePath,IMU_filePath)
 disp(EMG_filePath);
 disp(IMU_filePath);
 EMG_file = csvread(EMG_filePath);
 IMU_file = csvread(IMU_filePath);
     
 EatingActionFrameRange = csvread(Assignment2Path);
-numFrames = ceil(30*Video.Duration);
 
 [row,col] = size(EatingActionFrameRange);
 NoneatingActionFrameRange = nan(row,2);
@@ -20,18 +17,17 @@ for iter = 1:row
         NoneatingActionFrameRange(iter,2) = numFrames;
     end
 end
+EatingActionEMG = parseEMGfile(row,numFrames,EatingActionFrameRange,EMG_file,frameRate);
+NoneatingActionEMG = parseEMGfile(row,numFrames,NoneatingActionFrameRange,EMG_file,frameRate);
 
-EatingActionEMG = parseEMGfile(row,numFrames,EatingActionFrameRange,EMG_file,Video);
-NoneatingActionEMG = parseEMGfile(row,numFrames,NoneatingActionFrameRange,EMG_file,Video);
-
-EatingActionIMU = parseIMUfile(row,numFrames,EatingActionFrameRange,IMU_file,Video);
-NoneatingActionIMU = parseIMUfile(row,numFrames,NoneatingActionFrameRange,IMU_file,Video);
+EatingActionIMU = parseIMUfile(row,numFrames,EatingActionFrameRange,IMU_file,frameRate);
+NoneatingActionIMU = parseIMUfile(row,numFrames,NoneatingActionFrameRange,IMU_file,frameRate);
 
 EatingActionCSV = joinEMGandIMU(EatingActionEMG,EatingActionIMU);
 NoneatingActionCSV = joinEMGandIMU(NoneatingActionEMG,NoneatingActionIMU);
 end
 
-function [ActionEMG] = parseEMGfile(row,numFrames,ActionFrameRange,EMG_file,Video)
+function [ActionEMG] = parseEMGfile(row,numFrames,ActionFrameRange,EMG_file,frameRate)
 
 [EMG_row,EMG_col] = size(EMG_file);
 LastTimestampEMG = EMG_file(EMG_row,1);
@@ -50,15 +46,19 @@ for iter = 1:(row * (EMG_col - 1))
 end
 
 ActionNo = 1;
-for iter = 1:row
-    ApproxStartTimestampEMG = LastTimestampEMG - ((numFrames - ActionFrameRange(iter,1))/Video.FrameRate)*1000;
-    ApproxEndTimestampEMG = LastTimestampEMG - ((numFrames - ActionFrameRange(iter,2))/Video.FrameRate)*1000;
+for iter = 1:row  
+    ApproxStartTimestampEMG = LastTimestampEMG - ((numFrames - ActionFrameRange(iter,1))/frameRate)*1000;
+    ApproxEndTimestampEMG = LastTimestampEMG - ((numFrames - ActionFrameRange(iter,2))/frameRate)*1000;
     for start = 1:EMG_row
        if EMG_file(start,1) > ApproxStartTimestampEMG
            break;
        end
     end
-    startpos = start - 1;
+    if(start == 1)
+        startpos = 1;
+    else
+        startpos = start - 1;
+    end
     for start = startpos:EMG_row
        if EMG_file(start,1) > ApproxEndTimestampEMG
            break;
@@ -71,7 +71,8 @@ end
 
 ActionEMG = ActionEMG';
 end
-function [ActionIMU] = parseIMUfile(row,numFrames,ActionFrameRange,IMU_file,Video)
+
+function [ActionIMU] = parseIMUfile(row,numFrames,ActionFrameRange,IMU_file,frameRate)
 
 [IMU_row,IMU_col] = size(IMU_file);
 LastTimestampIMU = IMU_file(IMU_row,1);
@@ -92,14 +93,18 @@ end
 
 ActionNo = 1;
 for iter = 1:row
-    ApproxStartTimestampIMU = LastTimestampIMU - ((numFrames - ActionFrameRange(iter,1))/Video.FrameRate)*1000;
-    ApproxEndTimestampIMU = LastTimestampIMU - ((numFrames - ActionFrameRange(iter,2))/Video.FrameRate)*1000;
+    ApproxStartTimestampIMU = LastTimestampIMU - ((numFrames - ActionFrameRange(iter,1))/frameRate)*1000;
+    ApproxEndTimestampIMU = LastTimestampIMU - ((numFrames - ActionFrameRange(iter,2))/frameRate)*1000;
     for start = 1:IMU_row
        if IMU_file(start,1) > ApproxStartTimestampIMU
            break;
        end
     end
-    startpos = start - 1;
+    if(start == 1)
+        startpos = 1;
+    else
+        startpos = start - 1;
+    end
     for start = startpos:IMU_row
        if IMU_file(start,1) > ApproxEndTimestampIMU
            break;
