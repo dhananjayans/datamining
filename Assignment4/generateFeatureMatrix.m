@@ -41,7 +41,8 @@ function[dataTable] = generateFeatureMatrix(eatingMatrix, nonEatingMatrix)
 %     Variance, Orientation-Y Variance, Orientation-Z Variance,
 %     Orientation-w Variance, Class labels (1 eating, 0 non eating)
     dataTable = [sampleIDArr', [gyroXVals_Eating,gyroXVals_NonEating]', [gyroYVals_Eating,gyroYVals_NonEating]', [gyroZVals_Eating, gyroZVals_NonEating]', [orientationX_Eating, orientationX_NonEating]', [orientationY_Eating, orientationY_NonEating]', [orientationZ_Eating, orientationZ_NonEating]', [orientationW_Eating, orientationW_NonEating]', classLabels']; 
-%     save('dataTable', 'dataTable');
+    dataTable = projectAndTrasformPCA(dataTable);
+    %     save('dataTable', 'dataTable');
 end
 
 function[mapping] = getFeatureNameMappings()
