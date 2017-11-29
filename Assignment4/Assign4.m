@@ -33,11 +33,11 @@ for i = 1:33
     end
     
     [train,test] = prepareTrainingAndTestData(eatingMat.result,nonEatingMat.result);
-    [p,r,f,a] = DecisionTree(train,test);
+    [p,r,f,a] = DecisionTree(train,test, strcat('ROC curve for Decision Tree Task 1, Group: ', num2str(i)));
     valMatrix(i,1:4) = [p r f a];
-    [p,r,f,a] = SVM(train,test);
+    [p,r,f,a] = SVM(train, test, strcat('ROC curve for SVM Task 1, Group: ', num2str(i)));
     valMatrix(i,5:8) = [p r f a];
-    [p,r,f,a] = NeuralNet(train,test);
+    [p,r,f,a] = NeuralNet(train, test, strcat('ROC curve for Neural Network Task 1, Group: ', num2str(i)));
     valMatrix(i,9:12) = [p r f a];
     disp(valMatrix(i,:));
 end
@@ -60,14 +60,14 @@ for i = 1:33
     end
     if(i>10)
         interMat = generateFeatureMatrix(eatingMat.result,nonEatingMat.result);
-        [p,r,f,a] = DecisionTree(trainMat,interMat);
+        [p,r,f,a] = DecisionTree(trainMat,interMat, strcat('ROC curve for Decision Tree Task 2, Group: ', num2str(i)));
         secondQuestAnswers(i-10,1:4) = [p r f a];
-        [p,r,f,a] = SVM(trainMat,interMat);
+        [p,r,f,a] = SVM(trainMat, interMat, strcat('ROC curve for SVM Task 2, Group: ', num2str(i)));
         secondQuestAnswers(i-10,5:8) = [p r f a];
-        [p,r,f,a] = NeuralNet(trainMat,interMat);
+        [p,r,f,a] = NeuralNet(trainMat,interMat, strcat('ROC curve for Neural Network Task 2, Group: ', num2str(i)));
         secondQuestAnswers(i-10,9:12) = [p r f a];
     end
 end
-save("firstVals.mat","valMatrix");
-save("secondVals.mat","secondQuestAnswers");
+save('firstVals.mat', 'valMatrix');
+save('secondVals.mat', 'secondQuestAnswers');
 end

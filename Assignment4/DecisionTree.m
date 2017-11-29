@@ -1,4 +1,4 @@
-function [precision,recall,f1,auc] = DecisionTree(trainData,testData)
+function [precision,recall,f1,auc] = DecisionTree(trainData,testData,figTitle)
     trainFeatures = trainData(:,2:end-1);
     trainlabel = trainData(:,end);
 
@@ -10,6 +10,6 @@ function [precision,recall,f1,auc] = DecisionTree(trainData,testData)
     testdata = testData(:,2:end-1);
     actuallabel = testData(:,end);
     [predictedlabel,scores,nodes,cnum] = predict(tree,testdata);
-    [precision,recall,f1,auc] = calculateAccuracy(actuallabel,predictedlabel,scores);
+    [precision,recall,f1,auc] = calculateAccuracy(actuallabel,predictedlabel,scores,figTitle);
     disp('DT End test');
 end
