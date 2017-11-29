@@ -2,16 +2,16 @@ function [precision,recall,f1,auc] = NeuralNet(trainData,testData,figTitle)
     trainFeatures = trainData(:,2:end-1);
     trainlabel = trainData(:,end);
 
-    disp('Begin training');
-    disp('Creating a 2 layered neural net with one hidden layer');
+%     disp('Begin training');
+%     disp('Creating a 2 layered neural net with one hidden layer');
     net = feedforwardnet(10);
     %net = configure(net,traindata);
 %     disp(trainFeatures');
 %     disp(trainlabel');
     [net,tr] = train(net,trainFeatures',trainlabel');
-    disp('Training done');
-
-    disp('Being test');
+%     disp('Training done');
+% 
+%     disp('Being test');
     testdata = testData(:,2:end-1);
     actuallabel = testData(:,end);
     predictedOutputs = net(testdata');
@@ -20,7 +20,7 @@ function [precision,recall,f1,auc] = NeuralNet(trainData,testData,figTitle)
 %     disp(net(testdata'));
 %     [predictedlabel,scores] = predict(net, testdata');
     [precision,recall,f1,auc] = calculateAccuracy(actuallabel,predictedClasses',scores',figTitle);
-    disp('End test');
+%     disp('End test');
 end
 
 function [predictedClasses] = predictClasses(scores)
