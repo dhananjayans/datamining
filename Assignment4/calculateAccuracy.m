@@ -1,4 +1,4 @@
-function[Precision, Recall, F1, AUC] = calculateAccuracy(actualClasses, PredictedClasses, scoresMat)
+function[Precision, Recall, F1, AUC] = calculateAccuracy(actualClasses, PredictedClasses, scoresMat, figTitle)
     confusionMatrix = confusionmat(actualClasses', PredictedClasses');
     scores = scoresMat(:,2);
     TP = confusionMatrix(2,2);
@@ -14,5 +14,6 @@ function[Precision, Recall, F1, AUC] = calculateAccuracy(actualClasses, Predicte
     plot(X,Y);
     xlabel('False positive rate');
     ylabel('True positive rate');
-    title('ROC Curve');
+    title(figTitle);
+    pause(1);
 end

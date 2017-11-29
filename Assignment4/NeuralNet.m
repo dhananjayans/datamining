@@ -1,5 +1,5 @@
-function [precision,recall,f1,auc] = NeuralNet(trainData,testData)
-    trainFeatures = trainData(:,1:end-1);
+function [precision,recall,f1,auc] = NeuralNet(trainData,testData,figTitle)
+    trainFeatures = trainData(:,2:end-1);
     trainlabel = trainData(:,end);
 
     disp('Begin training');
@@ -12,14 +12,14 @@ function [precision,recall,f1,auc] = NeuralNet(trainData,testData)
     disp('Training done');
 
     disp('Being test');
-    testdata = testData(:,1:end-1);
+    testdata = testData(:,2:end-1);
     actuallabel = testData(:,end);
     predictedOutputs = net(testdata');
     predictedClasses = predictClasses(predictedOutputs);
     scores = buildScoresMat(predictedOutputs);
 %     disp(net(testdata'));
 %     [predictedlabel,scores] = predict(net, testdata');
-    [precision,recall,f1,auc] = calculateAccuracy(actuallabel,predictedClasses',scores');
+    [precision,recall,f1,auc] = calculateAccuracy(actuallabel,predictedClasses',scores',figTitle);
     disp('End test');
 end
 
